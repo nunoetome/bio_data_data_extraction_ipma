@@ -34,7 +34,8 @@ LOG_OUTPUT_FILE = 'app.log'
 
 #LOG_FORMAT_FILE = '%(asctime)s - %(levelname)s - %(message)s - [%(filename)s - %(funcName)s]' 
 LOG_FORMAT_FILE = '%(asctime)s - %(name)s - %(levelname)s - %(message)s' 
-LOG_FORMAT_CONSOLE = '%(levelname)s - %(message)s'
+LOG_FORMAT_CONSOLE = '>>> %(levelname)s - %(message)s'
+LOG_FORMAT_DEBUG = '>-> %(asctime)s - %(name)s - %(levelname)s - %(message)s'
 # ----------------- END OF LOG CONFIGURATION -----------------
 
 
@@ -53,17 +54,43 @@ def ini_logging():
     LOGGER.addHandler(file_handler)
     
     
-    LOGGER.debug('file: ini_logging started')
-    LOGGER.debug('LOG_LEVEL_GLOBAL: $f', LOG_LEVEL_GLOBAL)
-    LOGGER.debug('Application loading: log started to file')
-    
     # CONSOLE HANDLER LOGGING CONFIGURATION
     console_handler = logging.StreamHandler()
-    console_handler.setLevel(logging.WARNING)
-    console_handler_formatter = logging.Formatter(LOG_FORMAT_CONSOLE)        
-    console_handler.setFormatter(console_handler_formatter)
+    console_handler.setLevel(LOG_LEVEL_CONSOLE)
+    console_handler_formatter = logging.Formatter(LOG_FORMAT_CONSOLE)    
+    
+        # Aplicar o formato correto dependendo do nível
+    class DebugFormatter(logging.Formatter):
+        def format(self, record):
+            if record.levelno == logging.DEBUG:
+                self._style._fmt = LOG_FORMAT_DEBUG  # Formato de debug
+            else:
+                self._style._fmt = LOG_FORMAT_CONSOLE  # Formato normal
+            return super().format(record)
+    
+        
+    console_handler.setFormatter(DebugFormatter())
     LOGGER.addHandler(console_handler)
-    LOGGER.debug('Application loading: log started to console')
+    
+    LOGGER.debug('1 - Debug message')
+    LOGGER.info('1 - Info message')
+    LOGGER.warning('1 - Warning message')
+    LOGGER.error('1 - Error message')
+    LOGGER.critical('1 - Critical message')
+    
+
+    ## Criar um manipulador específico para logs de debug
+    #debug_handler = logging.StreamHandler()
+    #debug_formatter = logging.Formatter(LOG_FORMAT_DEBUG)
+    #debug_handler.setFormatter(debug_formatter)  # Aplicar formato de debug
+    #debug_handler.setLevel(logging.DEBUG)
+    #LOGGER.addHandler(debug_handler)
+    #
+    #LOGGER.debug('2 - Debug message')
+    #LOGGER.info('2 - Info message')
+    #LOGGER.warning('2 - Warning message')
+    #LOGGER.error('2 - Error message')
+    #LOGGER.critical('2 - Critical message')
     
 
     

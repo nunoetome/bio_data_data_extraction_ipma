@@ -19,18 +19,8 @@ def load_settings():
 def main():
     settings = load_settings()
     ini_logging()
-    LOGGER.critical("------------------")
-    LOGGER.info('Application is starting...')
-    LOGGER.debug(f'Settings loaded: {settings}')     
+   
 
-    LOGGER.info('teste info')
-    LOGGER.debug('teste debug')
-    LOGGER.warning('teste warning')
-    LOGGER.error('teste error')
-    LOGGER.critical('teste critical')
-                
-                    
-    LOGGER.info('Finished')
     
     
 if __name__ == '__main__':
