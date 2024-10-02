@@ -3,6 +3,9 @@
 
 
 import logging
+import inspect
+import os
+
 
 # ----------------- LOG CONFIGURATION -----------------
 #
@@ -29,7 +32,8 @@ LOG_LEVEL_CONSOLE = logging.DEBUG
 
 LOG_OUTPUT_FILE = 'app.log'
 
-LOG_FORMAT_FILE = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+#LOG_FORMAT_FILE = '%(asctime)s - %(levelname)s - %(message)s - [%(filename)s - %(funcName)s]' 
+LOG_FORMAT_FILE = '%(asctime)s - %(name)s - %(levelname)s - %(message)s' 
 LOG_FORMAT_CONSOLE = '%(levelname)s - %(message)s'
 # ----------------- END OF LOG CONFIGURATION -----------------
 
@@ -40,10 +44,6 @@ def ini_logging():
     
     # GLOBAL LOGGING CONFIGURATION
     LOGGER.setLevel(LOG_LEVEL_GLOBAL) 
-
-    LOGGER.debug('Application loading: ini_logging started')
-    LOGGER.debug('LOG_LEVEL_GLOBAL: $f', LOG_LEVEL_GLOBAL)
-    LOGGER.debug('*********************')
     
     # FILE HANDLER LOGGING CONFIGURATION
     file_handler = logging.FileHandler(LOG_OUTPUT_FILE)
@@ -51,6 +51,10 @@ def ini_logging():
     file_handler_formatter = logging.Formatter(LOG_FORMAT_FILE)        
     file_handler.setFormatter(file_handler_formatter)
     LOGGER.addHandler(file_handler)
+    
+    
+    LOGGER.debug('file: ini_logging started')
+    LOGGER.debug('LOG_LEVEL_GLOBAL: $f', LOG_LEVEL_GLOBAL)
     LOGGER.debug('Application loading: log started to file')
     
     # CONSOLE HANDLER LOGGING CONFIGURATION
@@ -60,6 +64,8 @@ def ini_logging():
     console_handler.setFormatter(console_handler_formatter)
     LOGGER.addHandler(console_handler)
     LOGGER.debug('Application loading: log started to console')
+    
+
     
     return LOGGER
 
